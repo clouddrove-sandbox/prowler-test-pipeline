@@ -1,0 +1,86 @@
+name: Prowler Security Audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        type: choice
+        description: 'Select Environment name'
+        options:
+          - 6ix
+          - acnestudios-dev
+          - acnestudios-prod
+          - acnestudios-shared
+          - dataplied
+          - deepimmo-development
+          - deepimmo-production
+          - deepimmo-shared
+          - iconicli
+          - isec-dev
+          - isec-main
+          - isec-prod
+          - isec-sandbox
+          - myrobust
+          - proxify-new
+          - reachtalent-main
+          - reachtalent-nonprod
+          - reachtalent-prod
+          - samplesource
+          - sweetspot
+          - wise-account1
+          - wise-account2
+          - zippertic
+          
+permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
+
+jobs:
+  prowler-security-audit:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Environment Name
+        run: |
+          echo ${{ github.event.inputs.environment }}
+
+      - name: aws configure
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.PROWLER_ROLE_ARN }}
+          role-session-name: prowler-security-assessment
+          aws-region: us-east-1
+
+      - name: Installing Prowler Dependencies
+        run: |
+          sudo su
+          sudo apt-get update
+          sudo apt install zip unzip -y
+          sudo apt install python3-pip -y
+          sudo pip install prowler
+          sudo pip install matplotlib
+          ulimit -n 4096
+
+      - name: Running Security Audit on AWS
+        env:
+          SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+          ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
+        run: |
+          mkdir output
+          touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 
+          prowler aws --role arn:aws:iam::$ACCOUNT_ID:role/switch-role --slack -z -M csv json html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 1>/dev/null
+          sudo bash ./prowler_scan.sh
+        shell: bash
+        continue-on-error: true
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ secrets.TARGET_ACCOUNT_ID }}
+          path: /home/runner/work/prowler/prowler/output/
+          retention-days: 1
