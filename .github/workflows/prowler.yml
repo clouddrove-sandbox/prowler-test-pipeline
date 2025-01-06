@@ -55,14 +55,22 @@ jobs:
           role-session-name: prowler-security-assessment
           aws-region: us-east-1
 
+      # - name: Installing Prowler Dependencies
+      #   run: |
+      #     sudo su
+      #     sudo apt-get update
+      #     sudo apt install zip unzip -y
+      #     sudo apt install python3-pip -y
+      #     sudo pip install prowler
+      #     sudo pip install matplotlib
+      #     ulimit -n 4096
+
       - name: Installing Prowler Dependencies
         run: |
-          sudo su
           sudo apt-get update
-          sudo apt install zip unzip -y
-          sudo apt install python3-pip -y
-          sudo pip install prowler
-          sudo pip install matplotlib
+          sudo apt install zip unzip python3-pip -y
+          sudo apt remove python3-urllib3 -y
+          sudo pip install --ignore-installed prowler matplotlib pandas numpy requests slack-sdk plotly
           ulimit -n 4096
 
       - name: Running Security Audit on AWS
