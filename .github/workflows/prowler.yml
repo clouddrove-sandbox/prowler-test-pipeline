@@ -79,8 +79,13 @@ jobs:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
         run: |
-          mkdir output
-          touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 
+          # mkdir output
+          # touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 
+          # prowler aws --role arn:aws:iam::$ACCOUNT_ID:role/switch-role --slack -z -M csv json html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 1>/dev/null
+          # sudo bash ./prowler_scan.sh
+
+          mkdir -p /home/runner/work/prowler/prowler/output
+          touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt
           prowler aws --role arn:aws:iam::$ACCOUNT_ID:role/switch-role --slack -z -M csv json html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 1>/dev/null
           sudo bash ./prowler_scan.sh
         shell: bash
