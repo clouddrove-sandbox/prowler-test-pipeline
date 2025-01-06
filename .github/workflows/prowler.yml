@@ -55,16 +55,6 @@ jobs:
           role-session-name: prowler-security-assessment
           aws-region: eu-west-1
 
-      # - name: Installing Prowler Dependencies
-      #   run: |
-      #     sudo su
-      #     sudo apt-get update
-      #     sudo apt install zip unzip -y
-      #     sudo apt install python3-pip -y
-      #     sudo pip install prowler
-      #     sudo pip install matplotlib
-      #     ulimit -n 4096
-
       - name: Installing Prowler Dependencies
         run: |
           sudo apt-get update
@@ -79,14 +69,9 @@ jobs:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
         run: |
-          # mkdir output
-          # touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 
-          # prowler aws --role arn:aws:iam::$ACCOUNT_ID:role/switch-role --slack -z -M csv json-ocsf html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 1>/dev/null
-          # sudo bash ./prowler_scan.sh
-
           mkdir -p /home/runner/work/prowler/prowler/output
           touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt
-          prowler aws --role arn:aws:iam::924144197303:role/ruchit_prowler --slack -z -M csv json-ocsf html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 1>/dev/null
+          prowler aws --role arn:aws:iam::924144197303:role/ruchit_prowler_assume_role --slack -z -M csv json-ocsf html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 1>/dev/null
           sudo bash ./prowler_scan.sh
         shell: bash
         continue-on-error: true
