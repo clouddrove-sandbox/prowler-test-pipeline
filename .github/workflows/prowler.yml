@@ -74,7 +74,6 @@ jobs:
             --role arn:aws:iam::924144197303:role/ruchit_oidc \
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
-            --quiet \
             --slack
 
       - name: 'Upload Artifact'
