@@ -72,7 +72,7 @@ jobs:
         run: |
           mkdir -p /home/runner/work/prowler/prowler/output
           touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.html
-          prowler aws --role arn:aws:iam::924144197303:role/ruchit_oidc --slack -z -M csv json-ocsf html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.txt 1>/dev/null
+          prowler aws --role arn:aws:iam::924144197303:role/ruchit_oidc --slack -z -M csv json-ocsf html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.html 1>/dev/null
         shell: bash
         continue-on-error: true
 
