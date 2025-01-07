@@ -70,11 +70,12 @@ jobs:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
         run: |
-          mkdir -p /home/runner/work/prowler/prowler/output
-          touch /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.html
-          prowler aws --role arn:aws:iam::924144197303:role/ruchit_oidc --slack -z -M csv json-asff json-ocsf html --verbose | tee /home/runner/work/prowler/prowler/output/stdout-$ACCOUNT_ID.html 1>/dev/null
-        shell: bash
-        continue-on-error: true
+          prowler aws \
+            --role arn:aws:iam::924144197303:role/ruchit_oidc \
+            --output-directory /home/runner/work/prowler/prowler/output \
+            --output-modes html csv json-asff \
+            --quiet \
+            --slack
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
