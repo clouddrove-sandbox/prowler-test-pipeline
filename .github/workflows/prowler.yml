@@ -71,7 +71,7 @@ jobs:
           ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
         run: |
           prowler aws \
-            --arn:aws:iam::924144197303:role/ruchit_prowler \
+            --role arn:aws:iam::924144197303:role/ruchit_prowler \
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
             --slack
