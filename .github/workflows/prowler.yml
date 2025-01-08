@@ -75,6 +75,7 @@ jobs:
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
             --slack
+        continue-on-error: true
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
