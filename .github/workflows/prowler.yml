@@ -72,7 +72,6 @@ jobs:
         run: |
           prowler aws \
             --arn:aws:iam::924144197303:role/ruchit_prowler \
-            --region all \
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
             --slack
