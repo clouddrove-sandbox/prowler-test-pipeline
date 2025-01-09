@@ -46,8 +46,6 @@ jobs:
 
       - name: Running Security Audit on AWS
         env:
-          SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
         run: |
           prowler aws \
