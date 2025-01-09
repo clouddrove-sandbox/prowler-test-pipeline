@@ -47,12 +47,15 @@ jobs:
 
       - name: Running Security Audit on AWS
         env:
+          SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
         run: |
           prowler aws \
             --role arn:aws:iam::924144197303:role/ruchit_prowler \
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
+            --slack
 
           sudo bash ./prowler_scan.sh
         continue-on-error: true
