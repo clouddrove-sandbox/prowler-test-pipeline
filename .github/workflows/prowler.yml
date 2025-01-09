@@ -23,14 +23,14 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Environment Name
         run: |
           echo ${{ github.event.inputs.environment }}
 
       - name: aws configure
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.PROWLER_ROLE_ARN }}
           role-session-name: prowler-security-assessment
@@ -54,12 +54,11 @@ jobs:
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
 
-
           sudo bash ./prowler_scan.sh
         continue-on-error: true
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ secrets.TARGET_ACCOUNT_ID }}
           path: /home/runner/work/prowler/prowler/output/
