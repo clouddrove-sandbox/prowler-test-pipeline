@@ -8,29 +8,9 @@ on:
         type: choice
         description: 'Select Environment name'
         options:
-          - 6ix
-          - acnestudios-dev
-          - acnestudios-prod
-          - acnestudios-shared
-          - dataplied
-          - deepimmo-development
-          - deepimmo-production
-          - deepimmo-shared
-          - iconicli
-          - isec-dev
-          - isec-main
-          - isec-prod
-          - isec-sandbox
-          - myrobust
-          - proxify-new
-          - reachtalent-main
-          - reachtalent-nonprod
-          - reachtalent-prod
-          - samplesource
-          - sweetspot
-          - wise-account1
-          - wise-account2
-          - zippertic
+          - dev
+          - dev
+          - prod
           
 permissions:
       id-token: write   # This is required for requesting the JWT
