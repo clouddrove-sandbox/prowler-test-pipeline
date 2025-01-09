@@ -11,6 +11,7 @@ on:
           - test
           - dev
           - prod
+          - 6ix
           
 permissions:
       id-token: write   # This is required for requesting the JWT
