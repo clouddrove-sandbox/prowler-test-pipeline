@@ -8,7 +8,7 @@ on:
         type: choice
         description: 'Select Environment name'
         options:
-          - dev
+          - test
           - dev
           - prod
           
