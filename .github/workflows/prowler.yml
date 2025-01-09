@@ -52,6 +52,8 @@ jobs:
             --role arn:aws:iam::924144197303:role/ruchit_prowler \
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
+
+
           sudo bash ./prowler_scan.sh
         continue-on-error: true
 
