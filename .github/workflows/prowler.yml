@@ -45,20 +45,43 @@ jobs:
           prowler --version
           ulimit -n 4096
 
+      # - name: Running Security Audit on AWS
+      #   env:
+      #     SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+      #     SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+      #     ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
+      #   run: |
+      #     prowler aws \
+      #       --role arn:aws:iam::924144197303:role/ruchit_prowler \
+      #       --output-directory /home/runner/work/prowler/prowler/output \
+      #       --output-modes html csv json-asff \
+      #       --slack
+
+      #     sudo bash ./prowler_scan.sh
+      #   continue-on-error: true
+
       - name: Running Security Audit on AWS
         env:
-          SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           ACCOUNT_ID: ${{ secrets.TARGET_ACCOUNT_ID }}
         run: |
           prowler aws \
             --role arn:aws:iam::924144197303:role/ruchit_prowler \
             --output-directory /home/runner/work/prowler/prowler/output \
             --output-modes html csv json-asff \
-            --slack
 
           sudo bash ./prowler_scan.sh
         continue-on-error: true
+
+      - name: 'Notify Slack'
+        uses: clouddrove/action-slack-notify@1
+        if: always()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: 'Updated prowler workflow notification'
+          SLACK_ENV: 'DevOps'
+          SLACK_USERNAME: 'Sweetspot'
+          SLACK_ICON: 'https://sweetspot.io/wp-content/uploads/2019/09/favicon-32x32.png'
+          SLACK_COLOR: ${{ job.status == 'success' && 'good' || job.status == 'failure' && 'danger' || 'warning' }}
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v4
